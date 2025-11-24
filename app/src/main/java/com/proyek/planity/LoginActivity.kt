@@ -27,48 +27,28 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        initViews()
-
-        setupLoginListener()
-
-        setupRegisterListener()
-    }
-
-    private fun initViews() {
         etEmail = findViewById<EditText>(R.id.etTextEmailAddress)
         etPassword = findViewById<EditText>(R.id.etTextPassword)
         btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
         tvRegisterLink = findViewById<TextView>(R.id.tvRegisterLink)
-    }
+        val akunEmail: String = intent.getStringExtra("emailregis").toString()
+        val passwordEmail: String = intent.getStringExtra("passwordregis").toString()
 
-    private fun setupLoginListener() {
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
-            if (email.isEmpty()) {
-                etEmail.error = "Email is required"
-                etEmail.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (password.isEmpty()) {
-                etPassword.error = "Password is required"
-                etPassword.requestFocus()
-                return@setOnClickListener
-            }
-
-            Toast.makeText(this, "Login Successful! Email : $email", Toast.LENGTH_SHORT).show()
-
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-
+            if(email == akunEmail && password == passwordEmail){
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                Toast.makeText(this, "Login Successful! Email : $email", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Email atau Password salah, Silahkan coba lagi", Toast.LENGTH_SHORT).show()
             }
         }
-    private fun setupRegisterListener() {
-        tvRegisterLink.setOnClickListener {
-
+    tvRegisterLink.setOnClickListener {
+            val intent = Intent(this, RegisActivity::class.java)
+            startActivity(intent)
         }
     }
 }
