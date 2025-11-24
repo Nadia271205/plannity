@@ -1,60 +1,80 @@
 package com.proyek.planity.homeNav
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.proyek.planity.R
+import com.proyek.planity.Task
+import java.util.Calendar
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddNewFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddNewFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var viewModel: TaskViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_new, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddNewFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddNewFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
+
+        // btnBack dihapus dari sini
+        val etTaskTime = view.findViewById<EditText>(R.id.etTaskTime)
+        val btnSave = view.findViewById<Button>(R.id.btnSaveTask)
+        val etTitle = view.findViewById<EditText>(R.id.etTaskTitle)
+        val etDesc = view.findViewById<EditText>(R.id.etTaskDesc)
+
+        etTaskTime.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
+
+            val timePickerDialog = TimePickerDialog(
+                requireContext(),
+                { _, selectedHour, selectedMinute ->
+                    val timeString = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
+                    etTaskTime.setText(timeString)
+                },
+                hour,
+                minute,
+                true
+            )
+            timePickerDialog.show()
+        }
+
+        btnSave.setOnClickListener {
+            val title = etTitle.text.toString()
+            val desc = etDesc.text.toString()
+            val time = etTaskTime.text.toString()
+
+            if (title.isNotEmpty()) {
+                val newTask = Task(title, desc, time)
+                viewModel.addTask(newTask)
+
+                Toast.makeText(context, "Task Saved", Toast.LENGTH_SHORT).show()
+                // Jika ingin tetap di halaman ini setelah save, hapus baris di bawah ini:
+                // parentFragmentManager.popBackStack()
+
+                // Kosongkan input field setelah save (opsional)
+                etTitle.text.clear()
+                etDesc.text.clear()
+                etTaskTime.text.clear()
+            } else {
+                Toast.makeText(context, "Please enter a title", Toast.LENGTH_SHORT).show()
             }
+        }
     }
 }

@@ -7,7 +7,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private var taskList: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
@@ -39,4 +39,11 @@ class TaskAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<TaskA
     override fun getItemCount(): Int {
         return taskList.size
     }
+
+    fun updateData(newTasks: List<Task>) {
+        taskList = newTasks
+        notifyDataSetChanged()
+    }
+
+
 }
