@@ -1,9 +1,8 @@
-package com.proyek.planity.homeNav
+package com.proyek.planity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.proyek.planity.Task
 
 class TaskViewModel : ViewModel() {
     private val _taskList = MutableLiveData<MutableList<Task>>()
