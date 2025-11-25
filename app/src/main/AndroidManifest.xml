@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Planity">
+
         <activity
             android:name=".RegisActivity"
             android:exported="false" />
