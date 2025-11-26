@@ -18,35 +18,56 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: AppCompatButton
     private lateinit var tvRegisterLink: TextView
 
+    private val correctEmail = "admin@planity.com"
+    private val correctPassword = "123456"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        etEmail = findViewById<EditText>(R.id.etRegisEmailAddress)
-        etPassword = findViewById<EditText>(R.id.etRegisPassword)
-        btnLogin = findViewById<AppCompatButton>(R.id.btnRegis)
-        tvRegisterLink = findViewById<TextView>(R.id.tvLoginLink)
-        val akunEmail: String = intent.getStringExtra("admin@gmail.com").toString()
-        val passwordEmail: String = intent.getStringExtra("admin123").toString()
+
+        // Inisialisasi View (Pastikan ID ini sesuai dengan activity_login.xml)
+        etEmail = findViewById(R.id.etLoginEmailAddress)
+        etPassword = findViewById(R.id.etLoginPassword)
+        btnLogin = findViewById(R.id.btnLogin)
+        tvRegisterLink = findViewById(R.id.tvRegisLink)
 
         btnLogin.setOnClickListener {
-            val email = etEmail.text.toString().trim()
-            val password = etPassword.text.toString().trim()
+            val inputEmail = etEmail.text.toString().trim()
+            val inputPassword = etPassword.text.toString().trim()
 
-            if(email == akunEmail && password == passwordEmail){
+            if (inputEmail.isEmpty()) {
+                etEmail.error = "Email tidak boleh kosong"
+                etEmail.requestFocus()
+                return@setOnClickListener
+            }
+            if (inputPassword.isEmpty()) {
+                etPassword.error = "Password tidak boleh kosong"
+                etPassword.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (inputEmail == correctEmail && inputPassword == correctPassword) {
+                Toast.makeText(this, "Login Berhasil! Selamat datang admin.", Toast.LENGTH_SHORT).show()
+
                 val intent = Intent(this, MainActivity::class.java)
+
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
                 startActivity(intent)
-                Toast.makeText(this, "Login Successful! Email : $email", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Email atau Password salah, Silahkan coba lagi", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(this, "Email atau Password salah. Silakan coba lagi.", Toast.LENGTH_SHORT).show()
             }
         }
-    tvRegisterLink.setOnClickListener {
+
+        tvRegisterLink.setOnClickListener {
             val intent = Intent(this, RegisActivity::class.java)
             startActivity(intent)
         }

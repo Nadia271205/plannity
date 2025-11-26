@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 class TaskAdapter(private var taskList: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvTitle: TextView = itemView.findViewById(R.id.tvTitleRegis)
+        val tvTitle: TextView = itemView.findViewById(R.id.tvTitleLogin)
         val tvSubtitle: TextView = itemView.findViewById(R.id.tvSubtitle)
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val cbTask: CheckBox = itemView.findViewById(R.id.cbTask)

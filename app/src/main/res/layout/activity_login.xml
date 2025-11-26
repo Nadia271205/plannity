@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
 
         <TextView
-            android:id="@+id/tvTitleRegis"
+            android:id="@+id/tvTitleLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -53,14 +53,14 @@
             app:layout_constraintTop_toBottomOf="@id/tvBrand" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardRegisContainer"
+            android:id="@+id/cardLoginContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:cardBackgroundColor="@color/primary_color1"
             app:cardCornerRadius="24dp"
             app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleRegis">
+            app:layout_constraintTop_toBottomOf="@id/tvTitleLogin">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/etRegisEmailAddress"
+                    android:id="@+id/etLoginEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_input_field"
@@ -102,7 +102,7 @@
 
 
                 <EditText
-                    android:id="@+id/etRegisPassword"
+                    android:id="@+id/etLoginPassword"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_input_field"
@@ -117,7 +117,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnRegis"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginTop="24dp"
@@ -129,7 +129,7 @@
             android:textAllCaps="false"
             android:textColor="@color/text_black"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/cardRegisContainer"
+            app:layout_constraintTop_toBottomOf="@id/cardLoginContainer"
             tools:layout_editor_absoluteX="24dp" />
 
         <LinearLayout
@@ -139,8 +139,8 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/btnRegis"
-            app:layout_constraintTop_toBottomOf="@id/btnRegis">
+            app:layout_constraintStart_toStartOf="@+id/btnLogin"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -150,7 +150,7 @@
                 android:textColor="@color/text_black" />
 
             <TextView
-                android:id="@+id/tvLoginLink"
+                android:id="@+id/tvRegisLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inria_sans"
