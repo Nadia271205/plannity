@@ -32,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        // Inisialisasi View (Pastikan ID ini sesuai dengan activity_login.xml)
         etEmail = findViewById(R.id.etLoginEmailAddress)
         etPassword = findViewById(R.id.etLoginPassword)
         btnLogin = findViewById(R.id.btnLogin)

@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyek.planity.R
-import com.proyek.planity.Task
 import com.proyek.planity.TaskAdapter
 import com.proyek.planity.TaskViewModel
-
+import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeFragment : Fragment() {
     private lateinit var taskAdapter: TaskAdapter
@@ -27,6 +29,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val tvDate = view.findViewById<TextView>(R.id.tvDate)
+
+        val today = Date()
+
+        val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
+        val dateString = formatter.format(today)
+
+        tvDate.text = dateString
+        // ------------------------------
 
         viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
 
