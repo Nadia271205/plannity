@@ -27,12 +27,12 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        etEmail = findViewById<EditText>(R.id.etTextEmailAddress)
-        etPassword = findViewById<EditText>(R.id.etTextPassword)
-        btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
-        tvRegisterLink = findViewById<TextView>(R.id.tvRegisterLink)
-        val akunEmail: String = intent.getStringExtra("emailregis").toString()
-        val passwordEmail: String = intent.getStringExtra("passwordregis").toString()
+        etEmail = findViewById<EditText>(R.id.etRegisEmailAddress)
+        etPassword = findViewById<EditText>(R.id.etRegisPassword)
+        btnLogin = findViewById<AppCompatButton>(R.id.btnRegis)
+        tvRegisterLink = findViewById<TextView>(R.id.tvLoginLink)
+        val akunEmail: String = intent.getStringExtra("admin@gmail.com").toString()
+        val passwordEmail: String = intent.getStringExtra("admin123").toString()
 
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()

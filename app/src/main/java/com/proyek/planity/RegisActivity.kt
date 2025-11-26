@@ -19,10 +19,10 @@ class RegisActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val username = findViewById<EditText>(R.id.editTextTextusernameregis)
-        val email = findViewById<EditText>(R.id.editTextTextemailregis)
-        val password = findViewById<EditText>(R.id.editTextTextPassword3)
-        val btnregis = findViewById<Button>(R.id.buttonregis)
+        val username = findViewById<EditText>(R.id.etUsername)
+        val email = findViewById<EditText>(R.id.etRegisEmailAddress)
+        val password = findViewById<EditText>(R.id.etRegisPassword)
+        val btnregis = findViewById<Button>(R.id.btnRegis)
 
         btnregis.setOnClickListener {
             val email : String = email.text.toString()

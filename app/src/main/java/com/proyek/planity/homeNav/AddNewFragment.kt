@@ -32,7 +32,6 @@ class AddNewFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
 
-        // btnBack dihapus dari sini
         val etTaskTime = view.findViewById<EditText>(R.id.etTaskTime)
         val btnSave = view.findViewById<Button>(R.id.btnSaveTask)
         val etTitle = view.findViewById<EditText>(R.id.etTaskTitle)
@@ -66,10 +65,7 @@ class AddNewFragment : Fragment() {
                 viewModel.addTask(newTask)
 
                 Toast.makeText(context, "Task Saved", Toast.LENGTH_SHORT).show()
-                // Jika ingin tetap di halaman ini setelah save, hapus baris di bawah ini:
-                // parentFragmentManager.popBackStack()
 
-                // Kosongkan input field setelah save (opsional)
                 etTitle.text.clear()
                 etDesc.text.clear()
                 etTaskTime.text.clear()
