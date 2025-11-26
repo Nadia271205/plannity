@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -23,6 +24,7 @@ class RegisActivity : AppCompatActivity() {
         val email = findViewById<EditText>(R.id.etRegisEmailAddress)
         val password = findViewById<EditText>(R.id.etRegisPassword)
         val btnregis = findViewById<Button>(R.id.btnRegis)
+        val login = findViewById<TextView>(R.id.tvLoginLink)
 
         btnregis.setOnClickListener {
             val email : String = email.text.toString()
@@ -32,5 +34,11 @@ class RegisActivity : AppCompatActivity() {
             intent.putExtra("passwordregis", password)
             startActivity(intent)
         }
+
+        login.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }
