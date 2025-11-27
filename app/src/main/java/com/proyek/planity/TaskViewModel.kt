@@ -10,8 +10,9 @@ class TaskViewModel : ViewModel() {
 
     init {
         _taskList.value = mutableListOf(
-            Task("Judul Tugas 1", "Contoh tugas awal"),
-            Task("Judul Tugas 2", "Contoh tugas kedua", "10.00")
+            Task(title = "Menegerjakan Tugas Android", description = "Segera Dikerjakan mas", time = "10:00"),
+            Task(title = "Beli makanan kucing", description = "merk bolt", time = "01.00"),
+            Task(title = "Lari Pagi", description = "Keliling Madiun", time = "01.00", isCompleted = true),
         )
     }
 
@@ -19,5 +20,16 @@ class TaskViewModel : ViewModel() {
         val currentList = _taskList.value ?: mutableListOf()
         currentList.add(0, task)
         _taskList.value = currentList
+    }
+
+    fun updateTaskStatus(task: Task, isDone: Boolean) {
+        val currentList = _taskList.value ?: return
+
+        val index = currentList.indexOfFirst { it.id == task.id  }
+
+        if (index != -1) {
+            currentList[index].isCompleted = isDone
+            _taskList.value = currentList
+        }
     }
 }

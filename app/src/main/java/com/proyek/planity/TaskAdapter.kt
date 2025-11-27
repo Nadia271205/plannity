@@ -7,13 +7,32 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskAdapter(private var taskList: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private var taskList: List<Task>, private val onCheckChange: (Task) -> Unit) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitleLogin)
         val tvSubtitle: TextView = itemView.findViewById(R.id.tvSubtitle)
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val cbTask: CheckBox = itemView.findViewById(R.id.cbTask)
+
+        fun bind(task: Task) {
+            tvTitle.text = task.title
+            tvSubtitle.text = task.description
+
+            if(task.time.isNullOrEmpty()) {
+                tvTime.text = task.time
+                tvTime.visibility = View.VISIBLE
+            } else {
+                tvTime.visibility = View.GONE
+            }
+
+            cbTask.setOnCheckedChangeListener(null)
+            cbTask.isChecked = task.isCompleted
+
+            cbTask.setOnClickListener {
+                onCheckChange(task)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -22,18 +41,7 @@ class TaskAdapter(private var taskList: List<Task>) : RecyclerView.Adapter<TaskA
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = taskList[position]
-
-        holder.tvTitle.text = task.title
-        holder.tvSubtitle.text = task.description
-        holder.cbTask.isChecked = task.isCompleted
-
-        if (task.time != null) {
-            holder.tvTime.text = task.time
-            holder.tvTime.visibility = View.VISIBLE
-        } else {
-            holder.tvTime.visibility = View.GONE
-        }
+        holder.bind(taskList[position])
     }
 
     override fun getItemCount(): Int {
