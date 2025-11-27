@@ -32,25 +32,25 @@ class HomeFragment : Fragment() {
 
 
         val tvDate = view.findViewById<TextView>(R.id.tvDate)
-
         val today = Date()
-
         val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
         val dateString = formatter.format(today)
-
         tvDate.text = dateString
-        // ------------------------------
 
         viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
 
         val rvTasks = view.findViewById<RecyclerView>(R.id.rvTasks)
         rvTasks.layoutManager = LinearLayoutManager(context)
 
-        taskAdapter = TaskAdapter(emptyList())
+        taskAdapter = TaskAdapter(emptyList()) { task ->
+            viewModel.updateTaskStatus(task, true)
+        }
+
         rvTasks.adapter = taskAdapter
 
-        viewModel.taskList.observe(viewLifecycleOwner) { tasks ->
-            taskAdapter.updateData(tasks)
+        viewModel.taskList.observe(viewLifecycleOwner) { allTasks ->
+            val pendingTask = allTasks.filter { !it.isCompleted }
+            taskAdapter.updateData(pendingTask)
         }
     }
 }
