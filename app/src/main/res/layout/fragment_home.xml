@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Senin, 17 November 2025"
+        tools:text="Senin, 17 November 2025"
         android:textColor="#808080"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/tvHeaderTitle"
