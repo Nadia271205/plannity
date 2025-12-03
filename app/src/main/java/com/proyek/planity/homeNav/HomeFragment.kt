@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+// tanggal
         val tvDate = view.findViewById<TextView>(R.id.tvDate)
         val today = Date()
         val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
@@ -43,9 +43,15 @@ class HomeFragment : Fragment() {
         val rvTasks = view.findViewById<RecyclerView>(R.id.rvTasks)
         rvTasks.layoutManager = LinearLayoutManager(context)
 
-        taskAdapter = TaskAdapter(emptyList()) { task ->
-            viewModel.updateTaskStatus(task, true)
-        }
+        taskAdapter = TaskAdapter(
+            emptyList(),
+            onCheckChange = { task ->
+                viewModel.updateTaskStatus(task, true)
+            },
+            onDeleteClick = { task ->
+                viewModel.deleteTask(task)
+            }
+        )
 
         rvTasks.adapter = taskAdapter
 

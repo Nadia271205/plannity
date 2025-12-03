@@ -32,4 +32,10 @@ class TaskViewModel : ViewModel() {
             _taskList.value = currentList
         }
     }
+
+    fun deleteTask(task: Task) {
+        val currentList = _taskList.value ?: return
+        currentList.remove(task)
+        _taskList.value = currentList
+    }
 }

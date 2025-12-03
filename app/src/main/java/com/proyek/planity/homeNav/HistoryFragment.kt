@@ -32,9 +32,17 @@ class HistoryFragment : Fragment() {
         val rvHistory = view.findViewById<RecyclerView>(R.id.rvHistory)
         rvHistory.layoutManager = LinearLayoutManager(context)
 
-        historyAdapter = TaskAdapter(emptyList()) { task ->
-            viewModel.updateTaskStatus(task, false)
-        }
+        historyAdapter = TaskAdapter(
+            emptyList(),
+            onCheckChange = { task ->
+
+                viewModel.updateTaskStatus(task, false)
+            },
+            onDeleteClick = { task ->
+
+                viewModel.deleteTask(task)
+            }
+        )
 
         rvHistory.adapter = historyAdapter
 
