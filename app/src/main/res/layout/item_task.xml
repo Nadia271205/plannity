@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvTitleLogin"
+            android:id="@+id/tvJudulTugas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -52,7 +52,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvSubtitle"
+            android:id="@+id/tvDeskripsi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -63,8 +63,8 @@
             android:textColor="#666666"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@id/btnDelete"
-            app:layout_constraintStart_toStartOf="@id/tvTitleLogin"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleLogin" />
+            app:layout_constraintStart_toStartOf="@id/tvJudulTugas"
+            app:layout_constraintTop_toBottomOf="@id/tvJudulTugas" />
 
         <ImageButton
             android:id="@+id/btnDelete"

@@ -13,8 +13,8 @@ class TaskAdapter(private var taskList: List<Task>,
                   private val onDeleteClick: (Task) -> Unit) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvTitle: TextView = itemView.findViewById(R.id.tvTitleLogin)
-        val tvSubtitle: TextView = itemView.findViewById(R.id.tvSubtitle)
+        val tvTitle: TextView = itemView.findViewById(R.id.tvJudulTugas)
+        val tvDeskripsi: TextView = itemView.findViewById(R.id.tvDeskripsi)
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val cbTask: CheckBox = itemView.findViewById(R.id.cbTask)
         val btnDelete: ImageView = itemView.findViewById(R.id.btnDelete)
@@ -22,7 +22,7 @@ class TaskAdapter(private var taskList: List<Task>,
 
         fun bind(task: Task) {
             tvTitle.text = task.title
-            tvSubtitle.text = task.description
+            tvDeskripsi.text = task.description
 
             if(task.time.isNullOrEmpty()) {
                 tvTime.text = task.time

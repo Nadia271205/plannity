@@ -61,7 +61,7 @@ class AddNewFragment : Fragment() {
             val time = etTaskTime.text.toString()
 
             if (title.isNotEmpty()) {
-                val newTask = Task(title, desc, time)
+                val newTask = Task(title = title, description = desc, time = time)
                 viewModel.addTask(newTask)
 
                 Toast.makeText(context, "Task Saved", Toast.LENGTH_SHORT).show()
