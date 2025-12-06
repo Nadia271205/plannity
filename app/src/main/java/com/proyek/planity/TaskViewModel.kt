@@ -8,6 +8,9 @@ class TaskViewModel : ViewModel() {
     private val _taskList = MutableLiveData<MutableList<Task>>()
     val taskList: LiveData<MutableList<Task>> get() = _taskList
 
+    private val _taskToEdit = MutableLiveData<Task?>()
+    val taskToEdit: LiveData<Task?> get() = _taskToEdit
+
     init {
         _taskList.value = mutableListOf(
             Task(title = "Menegerjakan Tugas Android", description = "Segera Dikerjakan mas", time = "10:00"),
@@ -24,7 +27,6 @@ class TaskViewModel : ViewModel() {
 
     fun updateTaskStatus(task: Task, isDone: Boolean) {
         val currentList = _taskList.value ?: return
-
         val index = currentList.indexOfFirst { it.id == task.id  }
 
         if (index != -1) {
@@ -33,9 +35,29 @@ class TaskViewModel : ViewModel() {
         }
     }
 
+    fun updateTaskContent(id: String, newTitle: String, newDesc: String, newTime: String) {
+        val currentList = _taskList.value ?: return
+        val index = currentList.indexOfFirst { it.id == id }
+
+        if (index != -1) {
+            val oldTask = currentList[index]
+            val updatedTask = oldTask.copy(
+                title = newTitle,
+                description = newDesc,
+                time = newTime
+            )
+            currentList[index] = updatedTask
+            _taskList.value = currentList
+        }
+    }
+
     fun deleteTask(task: Task) {
         val currentList = _taskList.value ?: return
         currentList.remove(task)
         _taskList.value = currentList
+    }
+
+    fun setTaskToEdit(task: Task?) {
+        _taskToEdit.value = task
     }
 }

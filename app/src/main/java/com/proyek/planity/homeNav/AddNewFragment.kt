@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.proyek.planity.R
@@ -19,6 +18,7 @@ import java.util.Locale
 
 class AddNewFragment : Fragment() {
     private lateinit var viewModel: TaskViewModel
+    private var currentTaskId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +36,22 @@ class AddNewFragment : Fragment() {
         val btnSave = view.findViewById<Button>(R.id.btnSaveTask)
         val etTitle = view.findViewById<EditText>(R.id.etTaskTitle)
         val etDesc = view.findViewById<EditText>(R.id.etTaskDesc)
+
+        viewModel.taskToEdit.observe(viewLifecycleOwner) { task ->
+            if (task != null) {
+                currentTaskId = task.id
+                etTitle.setText(task.title)
+                etDesc.setText(task.description)
+                etTaskTime.setText(task.time)
+                btnSave.text = "Update Task"
+            } else {
+                currentTaskId = null
+                etTitle.text.clear()
+                etDesc.text.clear()
+                etTaskTime.text.clear()
+                btnSave.text = "Save Task"
+            }
+        }
 
         etTaskTime.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -61,10 +77,16 @@ class AddNewFragment : Fragment() {
             val time = etTaskTime.text.toString()
 
             if (title.isNotEmpty()) {
-                val newTask = Task(title = title, description = desc, time = time)
-                viewModel.addTask(newTask)
+                if (currentTaskId != null) {
+                    viewModel.updateTaskContent(currentTaskId!!, title, desc, time)
+                    Toast.makeText(context, "Task Updated", Toast.LENGTH_SHORT).show()
+                } else {
+                    val newTask = Task(title = title, description = desc, time = time)
+                    viewModel.addTask(newTask)
+                    Toast.makeText(context, "Task Saved", Toast.LENGTH_SHORT).show()
+                }
 
-                Toast.makeText(context, "Task Saved", Toast.LENGTH_SHORT).show()
+                viewModel.setTaskToEdit(null)
 
                 etTitle.text.clear()
                 etDesc.text.clear()
@@ -73,5 +95,10 @@ class AddNewFragment : Fragment() {
                 Toast.makeText(context, "Please enter a title", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setTaskToEdit(null)
     }
 }

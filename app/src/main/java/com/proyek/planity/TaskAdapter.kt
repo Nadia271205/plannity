@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TaskAdapter(private var taskList: List<Task>,
                   private val onCheckChange: (Task) -> Unit,
-                  private val onDeleteClick: (Task) -> Unit) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+                  private val onDeleteClick: (Task) -> Unit,
+                  private val onUpdateClick: (Task) -> Unit) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.findViewById(R.id.tvJudulTugas)
@@ -18,14 +19,13 @@ class TaskAdapter(private var taskList: List<Task>,
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val cbTask: CheckBox = itemView.findViewById(R.id.cbTask)
         val btnDelete: ImageView = itemView.findViewById(R.id.btnDelete)
-
+        val btnUpdate: ImageView = itemView.findViewById(R.id.btnUpdate)
 
         fun bind(task: Task) {
             tvTitle.text = task.title
             tvDeskripsi.text = task.description
-
+            tvTime.text = task.time
             if(task.time.isNullOrEmpty()) {
-                tvTime.text = task.time
                 tvTime.visibility = View.GONE
             } else {
                 tvTime.visibility = View.VISIBLE
@@ -40,6 +40,10 @@ class TaskAdapter(private var taskList: List<Task>,
 
             btnDelete.setOnClickListener {
                 onDeleteClick(task)
+            }
+
+            btnUpdate.setOnClickListener {
+                onUpdateClick(task)
             }
         }
     }
@@ -61,6 +65,4 @@ class TaskAdapter(private var taskList: List<Task>,
         taskList = newTasks
         notifyDataSetChanged()
     }
-
-
 }

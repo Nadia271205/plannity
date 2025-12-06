@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyek.planity.R
-import com.proyek.planity.Task
 import com.proyek.planity.TaskAdapter
 import com.proyek.planity.TaskViewModel
 import android.widget.TextView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -31,7 +31,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-// tanggal
         val tvDate = view.findViewById<TextView>(R.id.tvDate)
         val today = Date()
         val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
@@ -50,6 +49,11 @@ class HomeFragment : Fragment() {
             },
             onDeleteClick = { task ->
                 viewModel.deleteTask(task)
+            },
+            onUpdateClick = { task ->
+                viewModel.setTaskToEdit(task)
+
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).selectedItemId = R.id.addNewFragment
             }
         )
 
@@ -59,12 +63,5 @@ class HomeFragment : Fragment() {
             val pendingTask = allTasks.filter { !it.isCompleted }
             taskAdapter.updateData(pendingTask)
         }
-
-
-
-        }
     }
-
-
-
-
+}

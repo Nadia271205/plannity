@@ -35,21 +35,19 @@ class HistoryFragment : Fragment() {
         historyAdapter = TaskAdapter(
             emptyList(),
             onCheckChange = { task ->
-
                 viewModel.updateTaskStatus(task, false)
             },
             onDeleteClick = { task ->
-
                 viewModel.deleteTask(task)
+            },
+            onUpdateClick = { task ->
             }
         )
 
         rvHistory.adapter = historyAdapter
 
         viewModel.taskList.observe(viewLifecycleOwner) { allTasks ->
-
             val completedTasks = allTasks.filter { it.isCompleted }
-
             historyAdapter.updateData(completedTasks)
         }
     }
