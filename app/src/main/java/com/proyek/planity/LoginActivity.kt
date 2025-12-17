@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        etEmail = findViewById(R.id.etLoginEmailAddress)
+        etEmail = findViewById(R.id.etLoginEmailAddress) 
         etPassword = findViewById(R.id.etLoginPassword)
         btnLogin = findViewById(R.id.btnLogin)
         tvRegisterLink = findViewById(R.id.tvRegisLink)
@@ -58,7 +58,8 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
 
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-
+                intent.putExtra("admin", correctEmail)
+                intent.putExtra("123456", correctPassword)
                 startActivity(intent)
             } else {
 

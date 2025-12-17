@@ -1,5 +1,6 @@
 package com.proyek.planity
 
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -29,9 +30,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragmentContainerView)
         bottomNavigationView.setupWithNavController(navController)
 
-
-
         }
-
 
     }

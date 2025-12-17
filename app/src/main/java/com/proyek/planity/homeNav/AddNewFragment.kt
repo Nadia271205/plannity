@@ -9,15 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.proyek.planity.R
 import com.proyek.planity.Task
-import com.proyek.planity.TaskViewModel
+import com.proyek.planity.TaskManager  // ← TAMBAH IMPORT INI
 import java.util.Calendar
 import java.util.Locale
 
 class AddNewFragment : Fragment() {
-    private lateinit var viewModel: TaskViewModel
     private var currentTaskId: String? = null
 
     override fun onCreateView(
@@ -30,43 +28,31 @@ class AddNewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
-
+        // menemukan semua komponen UI di layout dengan ID yang sesuai
         val etTaskTime = view.findViewById<EditText>(R.id.etTaskTime)
         val btnSave = view.findViewById<Button>(R.id.btnSaveTask)
         val etTitle = view.findViewById<EditText>(R.id.etTaskTitle)
         val etDesc = view.findViewById<EditText>(R.id.etTaskDesc)
 
-        viewModel.taskToEdit.observe(viewLifecycleOwner) { task ->
-            if (task != null) {
-                currentTaskId = task.id
-                etTitle.setText(task.title)
-                etDesc.setText(task.description)
-                etTaskTime.setText(task.time)
-                btnSave.text = "Update Task"
-            } else {
-                currentTaskId = null
-                etTitle.text.clear()
-                etDesc.text.clear()
-                etTaskTime.text.clear()
-                btnSave.text = "Save Task"
-            }
-        }
+        checkEditMode(etTitle, etDesc, etTaskTime, btnSave)
 
         etTaskTime.setOnClickListener {
             val calendar = Calendar.getInstance()
+
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
             val minute = calendar.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(
                 requireContext(),
                 { _, selectedHour, selectedMinute ->
-                    val timeString = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
+                    val timeString = String.format(
+                        Locale.getDefault(),
+                        "%02d:%02d",
+                        selectedHour,
+                        selectedMinute
+                    )
                     etTaskTime.setText(timeString)
-                },
-                hour,
-                minute,
-                true
+                }, hour, minute, true
             )
             timePickerDialog.show()
         }
@@ -78,15 +64,15 @@ class AddNewFragment : Fragment() {
 
             if (title.isNotEmpty()) {
                 if (currentTaskId != null) {
-                    viewModel.updateTaskContent(currentTaskId!!, title, desc, time)
+
+                    TaskManager.updateTaskContent(currentTaskId!!, title, desc, time)
+                    TaskManager.taskToEdit = null
                     Toast.makeText(context, "Task Updated", Toast.LENGTH_SHORT).show()
                 } else {
                     val newTask = Task(title = title, description = desc, time = time)
-                    viewModel.addTask(newTask)
+                    TaskManager.addTask(newTask)
                     Toast.makeText(context, "Task Saved", Toast.LENGTH_SHORT).show()
                 }
-
-                viewModel.setTaskToEdit(null)
 
                 etTitle.text.clear()
                 etDesc.text.clear()
@@ -97,8 +83,37 @@ class AddNewFragment : Fragment() {
         }
     }
 
+    //TAMBAH method ini untuk check edit mode
+    private fun checkEditMode(
+        etTitle: EditText,
+        etDesc: EditText,
+        etTaskTime: EditText,
+        btnSave: Button
+    ) {
+        val task = TaskManager.taskToEdit
+
+        if (task != null) {
+            // Mode EDIT
+            currentTaskId = task.id
+            etTitle.setText(task.title)
+            etDesc.setText(task.description)
+            etTaskTime.setText(task.time)
+            btnSave.text = "Update Task"
+
+            // Clear setelah diambil
+            TaskManager.taskToEdit = null
+        } else {
+            // Mode ADD NEW
+            currentTaskId = null
+            etTitle.text.clear()
+            etDesc.text.clear()
+            etTaskTime.text.clear()
+            btnSave.text = "Save Task"
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.setTaskToEdit(null)
+        TaskManager.taskToEdit = null
     }
 }

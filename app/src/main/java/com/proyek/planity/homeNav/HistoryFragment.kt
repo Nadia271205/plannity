@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyek.planity.R
 import com.proyek.planity.TaskAdapter
-import com.proyek.planity.TaskViewModel
+import com.proyek.planity.TaskManager
 
 class HistoryFragment : Fragment() {
 
     private lateinit var historyAdapter: TaskAdapter
-    private lateinit var viewModel: TaskViewModel
+
+    private val updateListener: () -> Unit = {
+        updateUI()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +30,7 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
+
 
         val rvHistory = view.findViewById<RecyclerView>(R.id.rvHistory)
         rvHistory.layoutManager = LinearLayoutManager(context)
@@ -35,10 +38,10 @@ class HistoryFragment : Fragment() {
         historyAdapter = TaskAdapter(
             emptyList(),
             onCheckChange = { task ->
-                viewModel.updateTaskStatus(task, false)
+                TaskManager.updateTaskStatus(task, false)
             },
-            onDeleteClick = { task ->
-                viewModel.deleteTask(task)
+            onDeleteClick = { task -> // menghapus tugas
+                TaskManager.deleteTask(task)
             },
             onUpdateClick = { task ->
             }
@@ -46,9 +49,23 @@ class HistoryFragment : Fragment() {
 
         rvHistory.adapter = historyAdapter
 
-        viewModel.taskList.observe(viewLifecycleOwner) { allTasks ->
-            val completedTasks = allTasks.filter { it.isCompleted }
-            historyAdapter.updateData(completedTasks)
-        }
+        updateUI()
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        TaskManager.addListener(updateListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        TaskManager.removeListener(updateListener)
+    }
+
+    private fun updateUI() {
+        val completedTasks = TaskManager.getCompletedTasks()
+        historyAdapter.updateData(completedTasks)
     }
 }

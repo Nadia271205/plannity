@@ -21,15 +21,15 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { //menampilkan halaman profile
         super.onViewCreated(view, savedInstanceState)
 
         val imageViewlogout = view.findViewById<ImageView>(R.id.imageViewlogout)
 
         imageViewlogout.setOnClickListener {
             val intent = Intent(requireActivity(), LoginActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            startActivity(intent) //pindah ke halaman login
+            requireActivity().finish() //menutup activity saat logout
         }
     }
 }

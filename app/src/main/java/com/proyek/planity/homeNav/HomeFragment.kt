@@ -1,25 +1,27 @@
 package com.proyek.planity.homeNav
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.proyek.planity.R
 import com.proyek.planity.TaskAdapter
-import com.proyek.planity.TaskViewModel
-import android.widget.TextView
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.proyek.planity.TaskManager
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class HomeFragment : Fragment() {
     private lateinit var taskAdapter: TaskAdapter
-    private lateinit var viewModel: TaskViewModel
+
+    private val updateListener: () -> Unit = {
+        updateUI()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,37 +33,48 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+// tanggal
         val tvDate = view.findViewById<TextView>(R.id.tvDate)
         val today = Date()
         val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
         val dateString = formatter.format(today)
         tvDate.text = dateString
 
-        viewModel = ViewModelProvider(requireActivity())[TaskViewModel::class.java]
-
         val rvTasks = view.findViewById<RecyclerView>(R.id.rvTasks)
         rvTasks.layoutManager = LinearLayoutManager(context)
 
-        taskAdapter = TaskAdapter(
+        taskAdapter = TaskAdapter (
             emptyList(),
             onCheckChange = { task ->
-                viewModel.updateTaskStatus(task, true)
+                TaskManager.updateTaskStatus(task, true)
             },
             onDeleteClick = { task ->
-                viewModel.deleteTask(task)
+                TaskManager.deleteTask(task)
             },
             onUpdateClick = { task ->
-                viewModel.setTaskToEdit(task)
-
-                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).selectedItemId = R.id.addNewFragment
+                TaskManager.taskToEdit = task
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                    .selectedItemId = R.id.addNewFragment
             }
         )
-
         rvTasks.adapter = taskAdapter
 
-        viewModel.taskList.observe(viewLifecycleOwner) { allTasks ->
-            val pendingTask = allTasks.filter { !it.isCompleted }
-            taskAdapter.updateData(pendingTask)
-        }
+        updateUI()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        TaskManager.addListener(updateListener)
+        updateUI()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        TaskManager.removeListener(updateListener)
+    }
+
+    private fun updateUI() {
+        val pendingTasks = TaskManager.getPendingTasks()
+        taskAdapter.updateData(pendingTasks)
     }
 }

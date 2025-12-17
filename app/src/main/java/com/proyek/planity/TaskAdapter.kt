@@ -21,21 +21,23 @@ class TaskAdapter(private var taskList: List<Task>,
         val btnDelete: ImageView = itemView.findViewById(R.id.btnDelete)
         val btnUpdate: ImageView = itemView.findViewById(R.id.btnUpdate)
 
-        fun bind(task: Task) {
-            tvTitle.text = task.title
-            tvDeskripsi.text = task.description
-            tvTime.text = task.time
+        fun bind(task: Task) { // menerima objek task yang berisi data tugas
+            tvTitle.text = task.title //judul ditampilkan
+            tvDeskripsi.text = task.description //deskripsi ditampilkan
+            tvTime.text = task.time //menampilkan waktu
             if(task.time.isNullOrEmpty()) {
-                tvTime.visibility = View.GONE
+                tvTime.visibility = View.GONE //waktu disembunyikan
             } else {
-                tvTime.visibility = View.VISIBLE
+                tvTime.text = task.time
+                tvTime.visibility = View.VISIBLE //waktu ditampilkan
             }
 
-            cbTask.setOnCheckedChangeListener(null)
-            cbTask.isChecked = task.isCompleted
+            cbTask.setOnCheckedChangeListener(null) // menghapus listener sebelumnya
+            cbTask.isChecked = task.isCompleted // mengecek apakah tugas sudah selesai
+
 
             cbTask.setOnClickListener {
-                onCheckChange(task)
+                onCheckChange(task)  //mengambil fungsi di atas
             }
 
             btnDelete.setOnClickListener {
@@ -49,20 +51,22 @@ class TaskAdapter(private var taskList: List<Task>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false) //memanggil nilai layout inflater dari tampilan xml item task
         return TaskViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) { //menampilkan data ke tampilan
         holder.bind(taskList[position])
     }
 
     override fun getItemCount(): Int {
-        return taskList.size
+        return taskList.size //mengembalikan jumlah item dalam daftar tugas
     }
 
     fun updateData(newTasks: List<Task>) {
-        taskList = newTasks
+        taskList = newTasks //mengupdate data tugas
         notifyDataSetChanged()
     }
+
+
 }

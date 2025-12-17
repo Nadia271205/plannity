@@ -27,17 +27,19 @@ class RegisActivity : AppCompatActivity() {
         val login = findViewById<TextView>(R.id.tvLoginLink)
 
         btnregis.setOnClickListener {
+            val username : String = username.text.toString()//mengambil data dari edittext dengan tipe data string
             val email : String = email.text.toString()
             val password : String = password.text.toString()
             val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("emailregis", email)
+            intent.putExtra("emailregis", email) //mengirim data ke halaman login
             intent.putExtra("passwordregis", password)
             startActivity(intent)
         }
 
         login.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            startActivity(intent) //pindah ke halaman login
+
         }
 
     }
